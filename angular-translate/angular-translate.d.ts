@@ -5,10 +5,15 @@
 
 /// <reference path="../angularjs/angular.d.ts" />
 
+declare module "angular-translate" {
+    var _: string;
+    export = _;
+}
+
 declare module angular.translate {
 
     interface ITranslationTable {
-        [key: string]: string;
+        [key: string]: any;
     }
 
     interface ILanguageKeyAlias {
@@ -88,7 +93,7 @@ declare module angular.translate {
         storageKey(key: string): void; // JeroMiya - the library should probably return ITranslateProvider but it doesn't here
         useUrlLoader(url: string): ITranslateProvider;
         useStaticFilesLoader(options: IStaticFilesLoaderOptions): ITranslateProvider;
-        useLoader(loaderFactory: string, options: any): ITranslateProvider;
+        useLoader(loaderFactory: string, options?: any): ITranslateProvider;
         useLocalStorage(): ITranslateProvider;
         useCookieStorage(): ITranslateProvider;
         useStorage(storageFactory: any): ITranslateProvider;
@@ -101,5 +106,13 @@ declare module angular.translate {
         registerAvailableLanguageKeys(): string[];
         registerAvailableLanguageKeys(languageKeys: string[], aliases?: ILanguageKeyAlias): ITranslateProvider;
         useLoaderCache(cache?: any): ITranslateProvider;
+    }
+}
+
+declare module angular {
+    interface IFilterService {
+        (name:'translate'): {
+            (translationId: string, interpolateParams?: any, interpolation?: string): string;
+        };
     }
 }
